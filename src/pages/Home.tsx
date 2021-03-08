@@ -28,6 +28,15 @@ const Home: React.FC = () => {
     fetchCountry()
   }, [])
 
+  const filteredCountry = countryData.filter(country => {
+    if (country.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return country;
+    } else {
+      return 0;
+    }
+  });
+
+
   return (
     <>
       <Header />
@@ -38,22 +47,16 @@ const Home: React.FC = () => {
 
         {searchTerm ? (
           <>
-            {
-              countryData.filter(country => {
-                if (searchTerm === '') {
-                  return country;
-                } else if (country.name.toLowerCase().includes(searchTerm.toLowerCase())) {
-                  return country;
-                }
-              }).map(country => {
-                return <CountryCard
-                  name={country.name}
-                  population={country.population}
-                  region={country.region}
-                  capital={country.capital}
-                  flag={country.flag}
-                />
-              })
+            {filteredCountry.map(country => {
+              return <CountryCard
+                name={country.name}
+                key={country.name}
+                population={country.population}
+                region={country.region}
+                capital={country.capital}
+                flag={country.flag}
+              />
+            })
             }
           </>
 
@@ -63,6 +66,7 @@ const Home: React.FC = () => {
             return (
               <CountryCard
                 name={country.name}
+                key={country.name}
                 population={country.population}
                 region={country.region}
                 capital={country.capital}
@@ -70,12 +74,7 @@ const Home: React.FC = () => {
               />
             )
           })
-
-        )
-
-
-
-        }
+        )}
 
       </HomeContainer>
     </>
